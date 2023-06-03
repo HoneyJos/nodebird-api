@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const User = require('./user');
 const Post = require('./post');
+const Domain = require('./domain');
 const Hashtag = require('./hashtag');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
@@ -14,13 +15,17 @@ db.sequelize = sequelize;
 db.User = User;
 db.Post = Post;
 db.Hashtag = Hashtag;
+db.Domain = Domain;
 
 User.initiate(sequelize);
 Post.initiate(sequelize);
 Hashtag.initiate(sequelize);
+Domain.initiate(sequelize);
+
 
 User.associate(db);
 Post.associate(db);
 Hashtag.associate(db);
+Domain.associate(db);
 
 module.exports = db;
