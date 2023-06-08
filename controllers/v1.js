@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { Domain, User } = require('../models');
+const { Domain, User, Post, Hashtag } = require('../models');
 
 exports.createToken = async (req, res) => {
     const { clientSecret } = req.body;
@@ -40,4 +40,22 @@ exports.createToken = async (req, res) => {
 
 exports.tokenTest = (req, res) => {
     res.json(res.locals.decoded);
-}
+};
+
+exports.getMyPosts = (req, res) => {
+    Post.findAll({ where: { userId: res.locals.decoded.id } })
+        .then((posts) => {
+            console.log(posts);
+            res.json({
+                code: 200,
+                payload: posts,
+            });
+        })
+        .catch((error) => {
+            console.error(error);
+            return res.status(500).json({
+                code: 500,
+                message: '서버 에러',
+            })
+        });
+};
